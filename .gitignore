@@ -1,0 +1,6 @@
+examples
+.pixi
+.github
+target
+.gitattributes
+*.lock
