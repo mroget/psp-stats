@@ -11,9 +11,10 @@ crate-type = ["cdylib"]
 [dependencies]
 correlation = "0.1.0"
 float-ord = "0.3.2"
+itertools = "0.14.0"
 mlua = {version = "0.11.6", features = ["luajit", "vendored"]}
 nalgebra = "0.34.1"
-pivot_saw = "0.2.0"
+pivot_saw = "0.3.0"
 pyo3 = "0.27.0"
 rand = "0.10.0"
 tqdm = "0.8.0"

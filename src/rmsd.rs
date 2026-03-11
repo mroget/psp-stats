@@ -59,6 +59,43 @@ pub fn rmsd(s1 : &[[f64; 3]], s2 : &[[f64; 3]]) -> f64 {
     kabsch_rmsd(&p,&q)
 }
 
+pub struct RMSDMultiple {
+    gt : Vec<Vector3<f64>>,
+    nb_model : usize,
+    length : usize,
+}
+
+impl RMSDMultiple {
+    pub fn new(gt : &Vec<Vec<[f64; 3]>>) -> RMSDMultiple {
+        if gt.len() == 0 {
+            panic!("The ground truth must have at least one model !");
+        }
+        let nb_model = gt.len();
+        let length = gt[0].len();
+        let mut l = vec![Vector3::new(0.,0.,0.);nb_model*length];
+        let mut k = 0;
+        for i in 0..nb_model {
+            for j in 0..length {
+                l[k] = gt[i][j].into();
+            }
+            k+=1;
+        }
+        RMSDMultiple {
+            nb_model : nb_model,
+            length : length,
+            gt : l,
+        }
+    }
+
+    pub fn calc(&self, s : &[[f64; 3]]) -> f64 {
+        let s : Vec<Vector3<f64>> = s.iter().map(|x| Vector3::new(x[0],x[1],x[2])).collect();
+        (0..self.nb_model)
+            .map(|i| FloatOrd(kabsch_rmsd(&s, &self.gt.get((i*self.length)..((i+1)*self.length)).unwrap())))
+            .min()
+            .unwrap_or(FloatOrd(f64::NAN)).0
+    }
+}
+
 pub fn rmsd_multiple(s1 : &[[f64; 3]], s2 : &Vec<Vec<[f64; 3]>>) -> f64 {
     s2.iter().map(|s| FloatOrd(rmsd(s1,s))).min().unwrap_or(FloatOrd(f64::NAN)).0
 }

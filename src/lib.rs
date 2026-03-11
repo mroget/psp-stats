@@ -1,175 +1,73 @@
-use std::collections::HashMap;
-use pyo3::ffi::c_str;
-use tqdm::tqdm;
-use std::time::Instant;
-use pivot_saw::lattice::BaseLattice;
-use pivot_saw::walk::SAWIterator;
+use crate::rmsd::RMSDMultiple;
+use crate::cost::Cost;
+use crate::sampling::Method;
+use crate::sampling::Lat;
+use crate::sampling::sample_solutions;
 use crate::dimmerize::dimmerize;
 use correlation::spearmanr;
 use crate::rmsd::rmsd_multiple;
 use pivot_saw::lattice::Lattice;
-use pivot_saw::lattice::Tetrahedral;
 use pyo3::prelude::*;
-use mlua::prelude::*;
-use pyo3::types::PyList;
+use tqdm::tqdm as tqdm_;
 
 mod rmsd;
 mod dimmerize;
+mod sampling;
+mod cost;
 
 
-fn dist(a : [f64; 3], b : [f64; 3]) -> f64 {
-    (0..2).map(|i| (a[i]-b[i]).powf(2.)).collect::<Vec<f64>>().into_iter().sum::<f64>().sqrt()
-}
-
-
-enum Method {
-    Pivot(usize, usize),
-    Dimerize,
-    Iterate
-}
-impl Method {
-    fn sample<L: Lattice<i32, 3, N>, const N : usize>(self, len : usize, sample_size : usize, lattice : L, scale : f64) -> Vec<Vec<[f64;3]>> {
-        match self {
-            Method::Pivot(thermalization_factor, autocorrelation_factor) => {
-                let mut pivot =  lattice.get_pivot(len, rand::rng(), thermalization_factor, autocorrelation_factor); 
-                tqdm(0..sample_size).map(|_| to_f64_coords(&pivot.next().unwrap(), scale)).collect()
-            }
-            Method::Dimerize => {
-                let mut ret = vec![vec![[0.;3];len];sample_size];
-                for i in 0..sample_size {
-                    ret[i] = to_f64_coords(&dimmerize(&lattice, len), scale);
-                }
-                ret
-            }
-            Method::Iterate => {
-                SAWIterator::new(lattice, len).map(|x| to_f64_coords(&x, scale)).collect()
-            }
+macro_rules! tqdm {
+    ($iter:expr, $cond:expr) => {
+        if $cond {
+            itertools::Either::Left(tqdm_($iter))
+        } else {
+            itertools::Either::Right($iter)
         }
+    };
+}
+
+pub(crate) use tqdm;
+
+fn vec_stats(l : &[f64]) -> (f64,f64,f64) {
+    assert!(l.len() != 0);
+    let mut min = l[0];
+    let mut max = l[0];
+    let mut avg = l[0];
+    for i in 1..l.len() {
+        avg += l[i];
+        if l[i] < min { min = l[i]; }
+        if l[i] > max { max = l[i]; }
     }
-}
-
-enum Lat {
-    Tetrahedral(f64),
-    FCC(f64),
-    BCC(f64),
-    Cubic(f64),
-}
-
-enum Cost<'py> {
-    Python(&'py Bound<'py, PyAny>, String),
-    Lua(Lua, LuaFunction, String),
-    Contact(Vec<f64>, usize, f64)
-}
-
-impl<'py> Cost<'py, > {
-    fn new(cost : &'py pyo3::Bound<'py, pyo3::PyAny>, seq : String, kmin : usize, dmax : f64) -> Cost<'py> {
-        match cost.is_callable() {
-            false => {
-                match cost.extract::<(String,String)>() {
-                    Ok((f, code)) => {
-                        let lua = Lua::new();
-                        lua.load(code).exec().unwrap();
-                        let fun: LuaFunction = lua.globals().get(f).unwrap();
-                        Cost::Lua(lua, fun, seq)
-                    }   
-                    Err(_) => {
-                        match cost.extract::<HashMap<char,HashMap<char,f64>>>() {
-                            Ok(map) => {
-                                let l : Vec<char> = seq.chars().collect();
-                                let mut ce = vec![];
-                                for i in 0..l.len() {
-                                    for j in (i+kmin)..l.len() {
-                                        ce.push(*map.get(&l[i]).unwrap().get(&l[j]).unwrap())
-                                    }
-                                }
-                                Cost::Contact(ce, kmin, dmax)
-                            },
-                            Err(_) => {panic!("Cannot recognize {} !", cost)},
-                        }
-                    },
-                }
-            },
-            true => {
-                Cost::Python(cost, seq)
-            }
-        }
-    }
-
-    fn call(&self, xyz : &Vec<[f64;3]>) -> f64 {
-        match self {
-            Cost::Lua(_lua, cost, seq) => {
-                let xyz : &[[f64;3]] = xyz;
-                let seq : &str = seq;
-                cost.call((seq, xyz)).unwrap()
-            },
-            Cost::Python(cost, seq) => {
-                //println!("{}",  cost.getattr(intern!(cost.py(), "__name__")).unwrap());
-                match cost.call((seq,xyz), None).unwrap().extract::<f64>() {
-                    Ok(x) => {x},
-                    Err(_) => {panic!("Argument cost must return a float !");},
-                }
-            },
-            Cost::Contact(ce, kmin, dmax) => {
-                let mut e = 0.;
-                let mut k = 0;
-                for i in 0..xyz.len() {
-                    for j in (i+kmin)..xyz.len() {
-                        if dist(xyz[i], xyz[j]) <= *dmax {
-                            e+=ce[k];
-                        }
-                        k+=1;
-                    }
-                }
-                e
-            }
-        }
-    }
+    avg = avg / (l.len() as f64);
+    (min, avg, max)
 }
 
 
-fn to_f64_coords(sol : &[[i32;3]], scale : f64) -> Vec<[f64;3]> {
-    sol.iter().map(|p| p.map(|x| (x as f64)*scale)).collect()
-}
-
-fn norm<const D : usize>(p : [i32;D]) -> f64 {
-    let mut r = 0.;
-    for i in 0..D {
-        r = r + (p[i]*p[i]) as f64;
-    }
-    r.sqrt()
-}
-
-
-fn sample_solutions(
-        len : usize,
+fn calculate(
+        seq : String, 
+        gt : &Vec<Vec<[f64;3]>>, 
+        cost : Cost,
         sample_size : usize,
         method : Method,
         lat : Lat,
-    ) -> Vec<Vec<[f64;3]>> {
-    match lat {
-        Lat::Tetrahedral(a) => {
-            let lattice = Tetrahedral::new(1);
-            let scale = a/norm(lattice.neighbors([0;3])[0]);
-            method.sample(len, sample_size, lattice, scale)
-        },
-        Lat::Cubic(a) => {
-            let lattice = BaseLattice::cubic_grid(1);
-            let scale = a/norm(lattice.neighbors([0;3])[0]);
-            method.sample(len, sample_size, lattice, scale)
-        },
-        Lat::BCC(a) => {
-            let lattice = BaseLattice::bcc(1);
-            let scale = a/norm(lattice.neighbors([0;3])[0]);
-            method.sample(len, sample_size, lattice, scale)
-        },
-        Lat::FCC(a) => {
-            let lattice = BaseLattice::fcc(1);
-            let scale = a/norm(lattice.neighbors([0;3])[0]);
-            method.sample(len, sample_size, lattice, scale)
-        },
+        verbose : bool,
+    ) -> (Vec<f64>,Vec<f64>) {
+    let solutions = sample_solutions(seq.len(), sample_size, method, lat, verbose);
+    if verbose {
+        eprintln!("Calculating the rmsd for the {} solutions ...", solutions.len());
     }
+    let rmsd_calculator = RMSDMultiple::new(gt);
+    let r: Vec<f64> = tqdm!(solutions.iter(), verbose)
+        .map(|xyz| rmsd_calculator.calc(xyz))
+        .collect();
+    if verbose {
+        eprintln!("Calculating the cost for the {} solutions using {} ...", solutions.len(), cost);
+    }
+    let e: Vec<f64> = tqdm!(solutions.iter(), verbose)
+        .map(|xyz| cost.call(xyz))
+        .collect();
+    (e,r)
 }
-
 
 
 fn correlation(
@@ -179,20 +77,40 @@ fn correlation(
         sample_size : usize,
         method : Method,
         lat : Lat,
+        verbose : bool,
     ) -> f64{    
-    let start = Instant::now();
-    let solutions = sample_solutions(seq.len(), sample_size, method, lat);
-    println!("sampling: {:?}", start.elapsed());
-    
-    let start = Instant::now();
-    let mut r = vec![];
-    let mut e = vec![];
-    for xyz in tqdm(solutions.into_iter()) {
-        r.push(rmsd_multiple(&xyz, gt));
-        e.push(cost.call(&xyz))
+    let (e,r) = calculate(seq, gt, cost, sample_size, method, lat, verbose);
+    if verbose {
+        eprintln!("Calculating the correlation ...");
     }
-    println!("rmsd: {:?}", start.elapsed());
-    spearmanr(&e,&r)
+    let s = spearmanr(&e,&r);
+    if verbose {
+        eprintln!("Done !");
+    }
+    s
+}
+
+
+fn stats(
+        seq : String, 
+        gt : &Vec<Vec<[f64;3]>>, 
+        cost : Cost,
+        sample_size : usize,
+        method : Method,
+        lat : Lat,
+        verbose : bool,
+    ) -> (f64, (f64,f64,f64), (f64,f64,f64)) {    
+    let (e,r) = calculate(seq, gt, cost, sample_size, method, lat, verbose);
+    if verbose {
+        eprintln!("Calculating statistics ...");
+    }
+    let corr = spearmanr(&e,&r);
+    let stat_e = vec_stats(&e);
+    let stat_r = vec_stats(&r);
+    if verbose {
+        eprintln!("Done !");
+    }
+    (corr, stat_e, stat_r)
 }
 
 
@@ -200,16 +118,63 @@ fn correlation(
 #[pymodule]
 mod qpsp_correlation {
     use crate::Cost;
-use crate::Lat;
-use crate::rmsd_multiple;
-use crate::Method;
-use pyo3::prelude::*;
+    use crate::Lat;
+    use crate::rmsd_multiple;
+    use crate::Method;
+    use pyo3::prelude::*;
+    
     
     use crate::correlation as rust_correlation;
     use crate::sample_solutions as rust_sample_solutions;
+    use crate::stats as rust_stats;
+
 
     #[pyfunction]
-    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8))]
+    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, verbose=false))]
+    fn stats(seq : String, 
+        gt : Vec<Vec<[f64;3]>>, 
+        cost : &Bound<'_, PyAny>, 
+        sample_size : usize,
+        method : Option<String>,
+        thermalization_factor : usize, 
+        autocorrelation_factor : usize,
+        lattice : &str,
+        arc_length : f64,
+        kmin : usize,
+        dmax : f64,
+        verbose : bool,
+    ) -> PyResult<(f64, (f64,f64,f64), (f64,f64,f64))> {
+        let c = Cost::new(cost, seq.clone(), kmin, dmax);
+        let m = match method.clone().unwrap_or("pivot".to_string()).as_str() {
+            "pivot" => {Method::Pivot(thermalization_factor,autocorrelation_factor)},
+            "dimerize" => {Method::Dimerize},
+            "iterate" => {Method::Iterate},
+            _ => {panic!("Method {:?} is not recognized !", method);}
+        };
+
+        let lat = match lattice {
+            "tetrahedral" => {Lat::Tetrahedral(arc_length)},
+            "cubic" => {Lat::Cubic(arc_length)},
+            "bcc" => {Lat::BCC(arc_length)},
+            "fcc" => {Lat::FCC(arc_length)},
+            x => {panic!("Lattice {:?} is not recognized !", x);}
+        };
+
+        Ok(rust_stats(
+            seq, 
+            &gt, 
+            c, 
+            sample_size, 
+            m,
+            lat,
+            verbose)
+        )
+    }
+
+
+
+    #[pyfunction]
+    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, verbose=false))]
     fn correlation(seq : String, 
         gt : Vec<Vec<[f64;3]>>, 
         cost : &Bound<'_, PyAny>, 
@@ -221,6 +186,7 @@ use pyo3::prelude::*;
         arc_length : f64,
         kmin : usize,
         dmax : f64,
+        verbose : bool,
     ) -> PyResult<f64> {
         let c = Cost::new(cost, seq.clone(), kmin, dmax);
         let m = match method.clone().unwrap_or("pivot".to_string()).as_str() {
@@ -244,13 +210,14 @@ use pyo3::prelude::*;
             c, 
             sample_size, 
             m,
-            lat)
+            lat,
+            verbose)
         )
     }
 
 
     #[pyfunction]
-    #[pyo3(signature = (len, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8))]
+    #[pyo3(signature = (len, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, verbose=false))]
     fn sample_solutions(len : usize,
         sample_size : usize,
         method : Option<String>,
@@ -258,6 +225,7 @@ use pyo3::prelude::*;
         autocorrelation_factor : usize,
         lattice : &str,
         arc_length : f64,
+        verbose : bool,
     ) -> PyResult<Vec<Vec<[f64;3]>>> {
             let m = match method.clone().unwrap_or("pivot".to_string()).as_str() {
                 "pivot" => {Method::Pivot(thermalization_factor,autocorrelation_factor)},
@@ -278,7 +246,8 @@ use pyo3::prelude::*;
                 len,
                 sample_size, 
                 m,
-                lat)
+                lat,
+                verbose)
             )
         }
 
