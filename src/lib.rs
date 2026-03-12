@@ -1,8 +1,8 @@
+use crate::sampling::sample_apply;
 use crate::rmsd::RMSDMultiple;
 use crate::cost::Cost;
 use crate::sampling::Method;
 use crate::sampling::Lat;
-use crate::sampling::sample_solutions;
 use crate::dimmerize::dimmerize;
 use correlation::spearmanr;
 use crate::rmsd::rmsd_multiple;
@@ -52,21 +52,24 @@ fn calculate(
         lat : Lat,
         verbose : bool,
     ) -> (Vec<f64>,Vec<f64>) {
-    let solutions = sample_solutions(seq.len(), sample_size, method, lat, verbose);
-    if verbose {
-        eprintln!("Calculating the rmsd for the {} solutions ...", solutions.len());
-    }
     let rmsd_calculator = RMSDMultiple::new(gt);
-    let r: Vec<f64> = tqdm!(solutions.iter(), verbose)
-        .map(|xyz| rmsd_calculator.calc(xyz))
-        .collect();
-    if verbose {
-        eprintln!("Calculating the cost for the {} solutions using {} ...", solutions.len(), cost);
-    }
-    let e: Vec<f64> = tqdm!(solutions.iter(), verbose)
-        .map(|xyz| cost.call(xyz))
-        .collect();
+    let ret = sample_apply(|xyz| 
+        {
+            (rmsd_calculator.calc(&xyz), cost.call(&xyz))
+        }, seq.len(), sample_size, method, lat, verbose);
+    let r = ret.iter().map(|x|x.0).collect();
+    let e = ret.into_iter().map(|x|x.1).collect();
     (e,r)
+}
+
+fn sample_solutions(
+        len : usize,
+        sample_size : usize,
+        method : Method,
+        lat : Lat,
+        verbose : bool,
+    ) -> Vec<Vec<[f64;3]>> {
+    sample_apply(|x| x, len, sample_size, method, lat, verbose)
 }
 
 
@@ -80,13 +83,7 @@ fn correlation(
         verbose : bool,
     ) -> f64{    
     let (e,r) = calculate(seq, gt, cost, sample_size, method, lat, verbose);
-    if verbose {
-        eprintln!("Calculating the correlation ...");
-    }
     let s = spearmanr(&e,&r);
-    if verbose {
-        eprintln!("Done !");
-    }
     s
 }
 
@@ -101,15 +98,9 @@ fn stats(
         verbose : bool,
     ) -> (f64, (f64,f64,f64), (f64,f64,f64)) {    
     let (e,r) = calculate(seq, gt, cost, sample_size, method, lat, verbose);
-    if verbose {
-        eprintln!("Calculating statistics ...");
-    }
     let corr = spearmanr(&e,&r);
     let stat_e = vec_stats(&e);
     let stat_r = vec_stats(&r);
-    if verbose {
-        eprintln!("Done !");
-    }
     (corr, stat_e, stat_r)
 }
 
@@ -130,7 +121,7 @@ mod qpsp_correlation {
 
 
     #[pyfunction]
-    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, verbose=false))]
+    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, pbar=false))]
     fn stats(seq : String, 
         gt : Vec<Vec<[f64;3]>>, 
         cost : &Bound<'_, PyAny>, 
@@ -142,7 +133,7 @@ mod qpsp_correlation {
         arc_length : f64,
         kmin : usize,
         dmax : f64,
-        verbose : bool,
+        pbar : bool,
     ) -> PyResult<(f64, (f64,f64,f64), (f64,f64,f64))> {
         let c = Cost::new(cost, seq.clone(), kmin, dmax);
         let m = match method.clone().unwrap_or("pivot".to_string()).as_str() {
@@ -167,14 +158,14 @@ mod qpsp_correlation {
             sample_size, 
             m,
             lat,
-            verbose)
+            pbar)
         )
     }
 
 
 
     #[pyfunction]
-    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, verbose=false))]
+    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, pbar=false))]
     fn correlation(seq : String, 
         gt : Vec<Vec<[f64;3]>>, 
         cost : &Bound<'_, PyAny>, 
@@ -186,7 +177,7 @@ mod qpsp_correlation {
         arc_length : f64,
         kmin : usize,
         dmax : f64,
-        verbose : bool,
+        pbar : bool,
     ) -> PyResult<f64> {
         let c = Cost::new(cost, seq.clone(), kmin, dmax);
         let m = match method.clone().unwrap_or("pivot".to_string()).as_str() {
@@ -211,13 +202,13 @@ mod qpsp_correlation {
             sample_size, 
             m,
             lat,
-            verbose)
+            pbar)
         )
     }
 
 
     #[pyfunction]
-    #[pyo3(signature = (len, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, verbose=false))]
+    #[pyo3(signature = (len, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, pbar=false))]
     fn sample_solutions(len : usize,
         sample_size : usize,
         method : Option<String>,
@@ -225,7 +216,7 @@ mod qpsp_correlation {
         autocorrelation_factor : usize,
         lattice : &str,
         arc_length : f64,
-        verbose : bool,
+        pbar : bool,
     ) -> PyResult<Vec<Vec<[f64;3]>>> {
             let m = match method.clone().unwrap_or("pivot".to_string()).as_str() {
                 "pivot" => {Method::Pivot(thermalization_factor,autocorrelation_factor)},
@@ -247,11 +238,29 @@ mod qpsp_correlation {
                 sample_size, 
                 m,
                 lat,
-                verbose)
+                pbar)
             )
         }
 
-    /// Formats the sum of two numbers as string.
+    
+    /// A function that calculates the rmsd. This is how the rmsd is calculated when the correlation or other statistics are computed.
+    /// The idea is to get the rmsd between a given structure and a list of structures (usually the models obtained from wetlabs experiments).
+    /// Args:
+    ///     - `sol`: A list of 3D vectors (list of length 3 lists).
+    ///     - `gt`: The list of structures that acts as ground truth.
+    /// This function returns the the minimum rmsd between `sol` and each of the structures in `gt`.
+    /// This function uses the kabsh algorithm to allign the structures.
+    /// This function panic if two structures do not have the same length.
+    ///
+    /// Example:
+    /// ```python
+    /// sol = [[0.,0.,0.], [1.,1.,1.]]
+    /// gt = [
+    ///        [[0.,0.,0.], [1.,-1.,1.]],
+    ///        [[1.,1.,1.], [0.,0.,0.]]
+    /// ]
+    /// assert(rmsd(sol,gt) <= 1e-5) # rmsd is equal to 0 between sol and gt[1].
+    ///```
     #[pyfunction]
     fn rmsd(sol: Vec<[f64;3]>, gt: Vec<Vec<[f64;3]>>) -> PyResult<f64> {
         Ok(rmsd_multiple(&sol, &gt))

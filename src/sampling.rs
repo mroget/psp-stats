@@ -36,69 +36,66 @@ pub enum Method {
     Iterate
 }
 impl Method {
-    fn sample<L: Lattice<i32, 3, N>, const N : usize>(self, len : usize, sample_size : usize, lattice : L, scale : f64, verbose : bool) -> Vec<Vec<[f64;3]>> {
+    fn sample<L: Lattice<i32, 3, N>, const N : usize, F : Fn(Vec<[f64;3]>) -> T, T>(
+        self, 
+        f : F, 
+        len : usize, 
+        sample_size : usize, 
+        lattice : L, 
+        scale : f64, 
+        verbose : bool) -> Vec<T> {
+
         match self {
             Method::Pivot(thermalization_factor, autocorrelation_factor) => {
                 let mut pivot =  lattice.get_pivot(len, rand::rng(), thermalization_factor, autocorrelation_factor); 
                 tqdm!(0..sample_size, verbose)
-                    .map(|_| to_f64_coords(&pivot.next().unwrap(), scale))
+                    .map(|_| f(to_f64_coords(&pivot.next().unwrap(), scale)))
                     .collect()
             }
             Method::Dimerize => {
                 tqdm!(0..sample_size, verbose)
-                    .map(|_| to_f64_coords(&dimmerize(&lattice, len), scale))
+                    .map(|_| f(to_f64_coords(&dimmerize(&lattice, len), scale)))
                     .collect()
             }
             Method::Iterate => {
                 let p0 = [0,0,0];
                 let p1 = lattice.neighbors(p0)[0];
                 tqdm!(SAWIterator::new(lattice, len, vec![p0,p1]), verbose)
-                    .map(|x : Vec<[i32;3]>| to_f64_coords(&x, scale))
+                    .map(|x : Vec<[i32;3]>| f(to_f64_coords(&x, scale)))
                     .collect()
             }
         }
     }
 }
 
-pub fn sample_solutions(
+pub fn sample_apply<F : Fn(Vec<[f64;3]>) -> T, T>(
+        f : F,
         len : usize,
         sample_size : usize,
         method : Method,
         lat : Lat,
         verbose : bool,
-    ) -> Vec<Vec<[f64;3]>> {
+    ) -> Vec<T> {
     match lat {
         Lat::Tetrahedral(a) => {
             let lattice = Tetrahedral::new(1);
             let scale = a/norm(lattice.neighbors([0;3])[0]);
-            if verbose {
-                eprintln!("Sampling {} random solutions of length {} on the Tetrahedral lattice ...", sample_size, len);
-            }
-            method.sample(len, sample_size, lattice, scale, verbose)
+            method.sample(f, len, sample_size, lattice, scale, verbose)
         },
         Lat::Cubic(a) => {
             let lattice = BaseLattice::cubic_grid(1);
             let scale = a/norm(lattice.neighbors([0;3])[0]);
-            if verbose {
-                eprintln!("Sampling {} random solutions of length {} on the Cubic lattice ...", sample_size, len);
-            }
-            method.sample(len, sample_size, lattice, scale, verbose)
+            method.sample(f, len, sample_size, lattice, scale, verbose)
         },
         Lat::BCC(a) => {
             let lattice = BaseLattice::bcc(1);
             let scale = a/norm(lattice.neighbors([0;3])[0]);
-            if verbose {
-                eprintln!("Sampling {} random solutions of length {} on the Body Centered Cubic lattice ...", sample_size, len);
-            }
-            method.sample(len, sample_size, lattice, scale, verbose)
+            method.sample(f, len, sample_size, lattice, scale, verbose)
         },
         Lat::FCC(a) => {
             let lattice = BaseLattice::fcc(1);
             let scale = a/norm(lattice.neighbors([0;3])[0]);
-            if verbose {
-                eprintln!("Sampling {} random solutions of length {} on the Face Centered Cubic lattice ...", sample_size, len);
-            }
-            method.sample(len, sample_size, lattice, scale, verbose)
+            method.sample(f, len, sample_size, lattice, scale, verbose)
         },
     }
 }
