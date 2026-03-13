@@ -4,3 +4,4 @@ examples
 target
 .gitattributes
 *.lock
+sphinx_doc/build

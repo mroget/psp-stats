@@ -105,9 +105,9 @@ fn stats(
 }
 
 
-/// A Python module implemented in Rust.
+/// A Python module implemented in Rust!
 #[pymodule]
-mod qpsp_correlation {
+mod qpsp_stats {
     use crate::Cost;
     use crate::Lat;
     use crate::rmsd_multiple;
@@ -120,8 +120,48 @@ mod qpsp_correlation {
     use crate::stats as rust_stats;
 
 
+    ///This function calculate several stats for a cost function on a QPSP instance.
+    ///
+    ///:param seq: The sequence of the protein.
+    ///:type seq: str
+    ///
+    ///:param gt: The groudn truth. A list of 3D strctures (list of lists of 3D vectors).
+    ///:type gt: list of floats of shape (k,n,3)
+    ///
+    ///:param cost: The cost function to be calculated. Can be a string tuple containing lua code and lua function name, a list of weight or an arbitrary python function.
+    ///:type cost: (str, str) | dict(dict(str)) | fun(seq : str, coordinates : list(list(f64))) -> f64
+    ///
+    ///:param sample_size: The number of structures. Ignored if method="iterate".
+    ///:type sample_size: int, default: 10000
+    ///
+    ///:param method: The sampling method.
+    ///:type method: str, default: "pivot"
+    ///
+    ///:param thermalization_factor: The thermalization factor of the pivot algorithm. Ignored for methods other than "pivot".
+    ///:type thermalization_factor: int, default: 100
+    ///
+    ///:param autocorrelation_factor: The autocorrelation factor of the pivot algorithm. Ignored for methods other than "pivot".
+    ///:type autocorrelation_factor: int, default: 10
+    ///
+    ///:param lattice: The 3D lattice used to sample structures.
+    ///:type lattice: str, default: "tetrahedral"
+    ///
+    ///:param arc_length: The length of the lattice's arcs.
+    ///:type arc_length: float, default: 3.8
+    ///
+    ///:param kmin: The minimum sequence distance for interactions. Ignored of cost isn't a dictionnary of energy coefficients.
+    ///:type kmin: int, default: 1
+    ///
+    ///:param dmax: The maximum euclidian distance for interactions. Ignored of cost isn't a dictionnary of energy coefficients.
+    ///:type dmax: float, default: 7.8
+    ///
+    ///:param pbar: If true, show a progress bar.
+    ///:type pbar: bool, default: false
+    ///
+    ///:return: (correlation, (min_cost, avg_cost, max_cost), (min_rmsd, avg_rmsd, max_rmsd))
+    ///:rtype: (float, (float, float, float), (float, float, float))
     #[pyfunction]
-    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, pbar=false))]
+    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=100, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, pbar=false))]
     fn stats(seq : String, 
         gt : Vec<Vec<[f64;3]>>, 
         cost : &Bound<'_, PyAny>, 
@@ -163,9 +203,48 @@ mod qpsp_correlation {
     }
 
 
-
+    ///This function calculate the correlation factor for a cost function on a QPSP instance.
+    ///
+    ///:param seq: The sequence of the protein.
+    ///:type seq: str
+    ///
+    ///:param gt: The groudn truth. A list of 3D strctures (list of lists of 3D vectors).
+    ///:type gt: list of floats of shape (k,n,3)
+    ///
+    ///:param cost: The cost function to be calculated. Can be a string tuple containing lua code and lua function name, a list of weight or an arbitrary python function.
+    ///:type cost: (str, str) | dict(dict(str)) | fun(seq : str, coordinates : list(list(f64))) -> f64
+    ///
+    ///:param sample_size: The number of structures. Ignored if method="iterate".
+    ///:type sample_size: int, default: 10000
+    ///
+    ///:param method: The sampling method.
+    ///:type method: str, default: "pivot"
+    ///
+    ///:param thermalization_factor: The thermalization factor of the pivot algorithm. Ignored for methods other than "pivot".
+    ///:type thermalization_factor: int, default: 100
+    ///
+    ///:param autocorrelation_factor: The autocorrelation factor of the pivot algorithm. Ignored for methods other than "pivot".
+    ///:type autocorrelation_factor: int, default: 10
+    ///
+    ///:param lattice: The 3D lattice used to sample structures.
+    ///:type lattice: str, default: "tetrahedral"
+    ///
+    ///:param arc_length: The length of the lattice's arcs.
+    ///:type arc_length: float, default: 3.8
+    ///
+    ///:param kmin: The minimum sequence distance for interactions. Ignored of cost isn't a dictionnary of energy coefficients.
+    ///:type kmin: int, default: 1
+    ///
+    ///:param dmax: The maximum euclidian distance for interactions. Ignored of cost isn't a dictionnary of energy coefficients.
+    ///:type dmax: float, default: 7.8
+    ///
+    ///:param pbar: If true, show a progress bar.
+    ///:type pbar: bool, default: false
+    ///
+    ///:return: The correlation coefficient of function "cost" for the protein.
+    ///:rtype: float between -1 and 1
     #[pyfunction]
-    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, pbar=false))]
+    #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=100, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, pbar=false))]
     fn correlation(seq : String, 
         gt : Vec<Vec<[f64;3]>>, 
         cost : &Bound<'_, PyAny>, 
@@ -183,7 +262,7 @@ mod qpsp_correlation {
         let m = match method.clone().unwrap_or("pivot".to_string()).as_str() {
             "pivot" => {Method::Pivot(thermalization_factor,autocorrelation_factor)},
             "dimerize" => {Method::Dimerize},
-            "iterate" => {Method::Iterate},
+            "enumerate" => {Method::Iterate},
             _ => {panic!("Method {:?} is not recognized !", method);}
         };
 
@@ -206,22 +285,49 @@ mod qpsp_correlation {
         )
     }
 
-
+    ///This function generates and returns a list of 3D self avoinding walk on a given lattice.
+    ///
+    ///:param len: The length of the structures.
+    ///:type len: int
+    ///
+    ///:param sample_size: The number of structures. Ignored if method="iterate".
+    ///:type sample_size: int, default: 10000
+    ///
+    ///:param method: The sampling method.
+    ///:type method: str, default: "pivot"
+    ///
+    ///:param thermalization_factor: The thermalization factor of the pivot algorithm. Ignored for methods other than "pivot".
+    ///:type thermalization_factor: int, default: 10
+    ///
+    ///:param autocorrelation_factor: The autocorrelation factor of the pivot algorithm. Ignored for methods other than "pivot".
+    ///:type autocorrelation_factor: int, default: 10
+    ///
+    ///:param lattice: The 3D lattice used to sample structures.
+    ///:type lattice: str, default: "tetrahedral"
+    ///
+    ///:param arc_length: The length of the lattice's arcs.
+    ///:type arc_length: float, default: 3.8
+    ///
+    ///:param pbar: If true, show a progress bar.
+    ///:type pbar: bool, default: false
+    ///
+    ///:return: A list of 3D self avoiding walk on the lattice.
+    ///:rtype: list of floats of shape (k,len,3). If the method is not "iterate", then k=sample_size.
     #[pyfunction]
-    #[pyo3(signature = (len, sample_size=10000, method=None, thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, pbar=false))]
+    #[pyo3(signature = (len, sample_size=10000, method="pivot", thermalization_factor=10, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, pbar=false))]
     fn sample_solutions(len : usize,
         sample_size : usize,
-        method : Option<String>,
+        method : &str,
         thermalization_factor : usize, 
         autocorrelation_factor : usize,
         lattice : &str,
         arc_length : f64,
         pbar : bool,
     ) -> PyResult<Vec<Vec<[f64;3]>>> {
-            let m = match method.clone().unwrap_or("pivot".to_string()).as_str() {
+            let m = match method {
                 "pivot" => {Method::Pivot(thermalization_factor,autocorrelation_factor)},
                 "dimerize" => {Method::Dimerize},
-                "iterate" => {Method::Iterate},
+                "enumerate" => {Method::Iterate},
                 _ => {panic!("Method {:?} is not recognized !", method);}
             };
 
@@ -243,24 +349,22 @@ mod qpsp_correlation {
         }
 
     
-    /// A function that calculates the rmsd. This is how the rmsd is calculated when the correlation or other statistics are computed.
-    /// The idea is to get the rmsd between a given structure and a list of structures (usually the models obtained from wetlabs experiments).
-    /// Args:
-    ///     - `sol`: A list of 3D vectors (list of length 3 lists).
-    ///     - `gt`: The list of structures that acts as ground truth.
-    /// This function returns the the minimum rmsd between `sol` and each of the structures in `gt`.
-    /// This function uses the kabsh algorithm to allign the structures.
-    /// This function panic if two structures do not have the same length.
+    ///A function that calculates the rmsd. This is how the rmsd is calculated when the correlation or other statistics are computed.
     ///
-    /// Example:
-    /// ```python
-    /// sol = [[0.,0.,0.], [1.,1.,1.]]
-    /// gt = [
-    ///        [[0.,0.,0.], [1.,-1.,1.]],
-    ///        [[1.,1.,1.], [0.,0.,0.]]
-    /// ]
-    /// assert(rmsd(sol,gt) <= 1e-5) # rmsd is equal to 0 between sol and gt[1].
-    ///```
+    ///The idea is to get the rmsd between a given structure and a list of structures (usually the models obtained from wetlabs experiments).
+    ///
+    ///:param sol: A 3D structure (list of 3D vectors).
+    ///:type sol: list of floats of shape (n, 3)
+    ///
+    ///:param gt: A list of 3D strctures (list of lists of 3D vectors).
+    ///:type gt: list of floats of shape (k,n,3)
+    ///
+    ///:return: This function returns the the minimum rmsd between `sol` and each of the structures in `gt`.
+    ///:rtype: float
+    ///
+    ///This function returns the the minimum rmsd between `sol` and each of the structures in `gt`.
+    ///This function uses the kabsh algorithm to align the structures.
+    ///This function panic if two structures do not have the same length.
     #[pyfunction]
     fn rmsd(sol: Vec<[f64;3]>, gt: Vec<Vec<[f64;3]>>) -> PyResult<f64> {
         Ok(rmsd_multiple(&sol, &gt))
