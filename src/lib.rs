@@ -28,18 +28,18 @@ macro_rules! tqdm {
 
 pub(crate) use tqdm;
 
-fn vec_stats(l : &[f64]) -> (f64,f64,f64) {
+fn vec_stats(l : &[f64]) -> (usize,f64,usize) {
     assert!(l.len() != 0);
-    let mut min = l[0];
-    let mut max = l[0];
+    let mut argmin = 0;
+    let mut argmax = 0;
     let mut avg = l[0];
     for i in 1..l.len() {
         avg += l[i];
-        if l[i] < min { min = l[i]; }
-        if l[i] > max { max = l[i]; }
+        if l[i] < l[argmin] { argmin = i; }
+        if l[i] > l[argmax] { argmax = i; }
     }
     avg = avg / (l.len() as f64);
-    (min, avg, max)
+    (argmin, avg, argmax)
 }
 
 
@@ -96,12 +96,12 @@ fn stats(
         method : Method,
         lat : Lat,
         verbose : bool,
-    ) -> (f64, (f64,f64,f64), (f64,f64,f64)) {    
+    ) -> (f64, (f64,f64,f64), (f64,f64,f64), (f64,f64)) {    
     let (e,r) = calculate(seq, gt, cost, sample_size, method, lat, verbose);
     let corr = spearmanr(&e,&r);
-    let stat_e = vec_stats(&e);
-    let stat_r = vec_stats(&r);
-    (corr, stat_e, stat_r)
+    let (amin_e, avg_e, amax_e) = vec_stats(&e);
+    let (amin_r, avg_r, amax_r) = vec_stats(&r);
+    (corr, (e[amin_e], avg_e, e[amax_e]), (r[amin_r], avg_r, r[amax_r]), (r[amin_e], r[amax_e]))
 }
 
 
@@ -158,8 +158,8 @@ mod qpsp_stats {
     ///:param pbar: If true, show a progress bar.
     ///:type pbar: bool, default: false
     ///
-    ///:return: (correlation, (min_cost, avg_cost, max_cost), (min_rmsd, avg_rmsd, max_rmsd))
-    ///:rtype: (float, (float, float, float), (float, float, float))
+    ///:return: (correlation, (min_cost, avg_cost, max_cost), (min_rmsd, avg_rmsd, max_rmsd), (min_cost_rmsd, max_cost_rmsd))
+    ///:rtype: (float, (float, float, float), (float, float, float), (float, float))
     #[pyfunction]
     #[pyo3(signature = (seq, gt, cost, sample_size=10000, method=None, thermalization_factor=100, autocorrelation_factor=10, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, pbar=false))]
     fn stats(seq : String, 
@@ -174,7 +174,7 @@ mod qpsp_stats {
         kmin : usize,
         dmax : f64,
         pbar : bool,
-    ) -> PyResult<(f64, (f64,f64,f64), (f64,f64,f64))> {
+    ) -> PyResult<(f64, (f64,f64,f64), (f64,f64,f64), (f64,f64))> {
         let c = Cost::new(cost, seq.clone(), kmin, dmax);
         let m = match method.clone().unwrap_or("pivot".to_string()).as_str() {
             "pivot" => {Method::Pivot(thermalization_factor,autocorrelation_factor)},
