@@ -5,7 +5,7 @@ use pyo3::prelude::*;
 use mlua::prelude::*;
 
 fn dist(a : [f64; 3], b : [f64; 3]) -> f64 {
-    (0..2).map(|i| (a[i]-b[i]).powf(2.)).collect::<Vec<f64>>().into_iter().sum::<f64>().sqrt()
+    (0..3).map(|i| (a[i]-b[i]).powf(2.)).collect::<Vec<f64>>().into_iter().sum::<f64>().sqrt()
 }
 
 
