@@ -113,6 +113,7 @@ mod qpsp_stats {
     use crate::rmsd_multiple;
     use crate::Method;
     use pyo3::prelude::*;
+    use crate::RMSDMultiple;
     
     
     use crate::correlation as rust_correlation;
@@ -367,6 +368,8 @@ mod qpsp_stats {
     ///This function panic if two structures do not have the same length.
     #[pyfunction]
     fn rmsd(sol: Vec<[f64;3]>, gt: Vec<Vec<[f64;3]>>) -> PyResult<f64> {
-        Ok(rmsd_multiple(&sol, &gt))
+        let tmp = RMSDMultiple::new(&gt);
+        Ok(tmp.calc(&sol))
+        //Ok(rmsd_multiple(&sol, &gt))
     }
 }

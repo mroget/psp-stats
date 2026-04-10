@@ -77,8 +77,8 @@ impl RMSDMultiple {
         for i in 0..nb_model {
             for j in 0..length {
                 l[k] = gt[i][j].into();
+                k+=1;
             }
-            k+=1;
         }
         RMSDMultiple {
             nb_model : nb_model,
