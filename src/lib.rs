@@ -14,6 +14,7 @@ mod rmsd;
 mod dimmerize;
 mod sampling;
 mod cost;
+mod minimize;
 
 
 macro_rules! tqdm {
@@ -108,7 +109,9 @@ fn stats(
 /// A Python module implemented in Rust!
 #[pymodule]
 mod qpsp_stats {
-    use crate::Cost;
+    use crate::minimize::minimize;
+use crate::minimize::Metric;
+use crate::Cost;
     use crate::Lat;
     use crate::rmsd_multiple;
     use crate::Method;
@@ -344,6 +347,104 @@ mod qpsp_stats {
                 len,
                 sample_size, 
                 m,
+                lat,
+                pbar)
+            )
+        }
+
+
+
+    ///This function calculates the structure with minimum rmsd aginst ground truth on a given lattice.
+    ///
+    ///:param gt: The groudn truth. A list of 3D strctures (list of lists of 3D vectors).
+    ///:type gt: list of floats of shape (k,n,3)
+    ///
+    ///:param lattice: The 3D lattice used to sample structures.
+    ///:type lattice: str, default: "tetrahedral"
+    ///
+    ///:param arc_length: The length of the lattice's arcs.
+    ///:type arc_length: float, default: 3.8
+    ///
+    ///:param pbar: If true, show a progress bar.
+    ///:type pbar: bool, default: false
+    ///
+    ///:return: A 3D self avoiding walk on the lattice.
+    ///:rtype: list of floats of shape (len,3). **DO NOT RUN THIS FOR LARGE SEQUENCES AS IT ENUMERATES ALL FEASIBLE SOLUTIONS WHICH GROW EXPONENTIALLY WITH THE SEQUENCE LENGTH !!!**
+    #[pyfunction]
+    #[pyo3(signature = (gt, lattice="tetrahedral", arc_length=3.8, pbar=false))]
+    fn minimize_rmsd(gt : Vec<Vec<[f64;3]>>,
+        lattice : &str,
+        arc_length : f64,
+        pbar : bool,
+    ) -> PyResult<Vec<[f64;3]>> {
+            assert!(gt.len()>0);
+
+            let lat = match lattice {
+                    "tetrahedral" => {Lat::Tetrahedral(arc_length)},
+                    "cubic" => {Lat::Cubic(arc_length)},
+                    "bcc" => {Lat::BCC(arc_length)},
+                    "fcc" => {Lat::FCC(arc_length)},
+                    x => {panic!("Lattice {:?} is not recognized !", x);}
+                };
+
+            Ok(minimize(
+                gt[0].len(),
+                Metric::RMSD(RMSDMultiple::new(&gt)),
+                lat,
+                pbar)
+            )
+        }
+
+
+    ///This function calculates the structure with minimum cost on a given lattice.
+    ///
+    ///:param seq: The sequence of the protein.
+    ///:type seq: str
+    ///
+    ///:param cost: The cost function to be calculated. Can be a string tuple containing lua code and lua function name, a list of weight or an arbitrary python function.
+    ///:type cost: (str, str) | dict(dict(str)) | fun(seq : str, coordinates : list(list(f64))) -> f64
+    ///
+    ///:param lattice: The 3D lattice used to sample structures.
+    ///:type lattice: str, default: "tetrahedral"
+    ///
+    ///:param arc_length: The length of the lattice's arcs.
+    ///:type arc_length: float, default: 3.8
+    ///
+    ///:param kmin: The minimum sequence distance for interactions. Ignored of cost isn't a dictionnary of energy coefficients.
+    ///:type kmin: int, default: 1
+    ///
+    ///:param dmax: The maximum euclidian distance for interactions. Ignored of cost isn't a dictionnary of energy coefficients.
+    ///:type dmax: float, default: 7.8
+    ///
+    ///:param pbar: If true, show a progress bar.
+    ///:type pbar: bool, default: false
+    ///
+    ///:return: A 3D self avoiding walk on the lattice.
+    ///:rtype: list of floats of shape (len,3). **DO NOT RUN THIS FOR LARGE SEQUENCES AS IT ENUMERATES ALL FEASIBLE SOLUTIONS WHICH GROW EXPONENTIALLY WITH THE SEQUENCE LENGTH !!!**
+    #[pyfunction]
+    #[pyo3(signature = (seq, cost, lattice="tetrahedral", arc_length=3.8, kmin=1, dmax=7.8, pbar=false))]
+    fn minimize_cost(seq : String, 
+        cost : &Bound<'_, PyAny>, 
+        lattice : &str,
+        arc_length : f64,
+        kmin : usize,
+        dmax : f64,
+        pbar : bool,
+    ) -> PyResult<Vec<[f64;3]>> {
+
+            let c = Cost::new(cost, seq.clone(), kmin, dmax);
+            
+            let lat = match lattice {
+                    "tetrahedral" => {Lat::Tetrahedral(arc_length)},
+                    "cubic" => {Lat::Cubic(arc_length)},
+                    "bcc" => {Lat::BCC(arc_length)},
+                    "fcc" => {Lat::FCC(arc_length)},
+                    x => {panic!("Lattice {:?} is not recognized !", x);}
+                };
+
+            Ok(minimize(
+                seq.len(),
+                Metric::Cost(c),
                 lat,
                 pbar)
             )
