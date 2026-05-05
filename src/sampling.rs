@@ -59,8 +59,8 @@ impl Method {
             }
             Method::Iterate => {
                 let p0 = [0,0,0];
-                let p1 = lattice.neighbors(p0)[0];
-                tqdm!(SAWIterator::new(lattice, len, vec![p0,p1]), verbose)
+                //let p1 = lattice.neighbors(p0)[0];
+                tqdm!(SAWIterator::new(lattice, len, vec![p0]), verbose)
                     .map(|x : Vec<[i32;3]>| f(to_f64_coords(&x, scale)))
                     .collect()
             }

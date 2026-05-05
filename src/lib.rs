@@ -16,7 +16,6 @@ mod sampling;
 mod cost;
 mod minimize;
 
-
 macro_rules! tqdm {
     ($iter:expr, $cond:expr) => {
         if $cond {
