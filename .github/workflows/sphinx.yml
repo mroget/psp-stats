@@ -13,8 +13,8 @@ jobs:
         with:
           pixi-version: v0.59.0
           environments: ${{ matrix.environment }}
-        - name: Build wheels
-          run: pixi run doc
+      - name: Build wheels
+        run: pixi run doc
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
