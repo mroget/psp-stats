@@ -9,6 +9,8 @@ version = "0.1.0"
 test = "pixi run maturin develop --release && pixi run python3 examples/basic.py"
 bench = "pixi run maturin develop --release && pixi run python3 examples/basic.py"
 doc = "pixi run maturin develop --release && cd sphinx_doc && make html"
+build = "pixi run maturin build --release"
+
 
 [dependencies]
 rust = ">=1.93.1,<1.94"
