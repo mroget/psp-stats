@@ -103,12 +103,14 @@ jobs:
         with:
           python-version: 3.13
           architecture: ${{ matrix.platform.python_arch }}
-      - name: Set up Lua 5.4
-        uses: masak/gh-action-setup-lua@v1
+      - name: Set up Lua 5.1
+        uses: leafo/gh-actions-lua@v13
         with:
-          lua-version: '5.4.6'
-      - name: Verify
-        run: lua -v
+          luaVersion: "5.1.5"
+      - name: Set up LuaJIT 2.1
+        uses: leafo/gh-actions-lua@v13
+        with:
+          luaVersion: "luajit-2.1.0-beta3"
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
