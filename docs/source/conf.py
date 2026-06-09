@@ -17,12 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'qpsp-stats'
+project = 'psp-stats'
 copyright = '2026, Mathieu Roget'
 author = 'Mathieu Roget'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0'
+release = '1.8'
 
 
 # -- General configuration ---------------------------------------------------
