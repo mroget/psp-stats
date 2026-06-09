@@ -44,7 +44,7 @@ jobs:
       - name: Option A — Install system Lua dev (if using system Lua)
         if: true   # change to true if you want system Lua
         run: |
-          sudo apt-get install -y liblua5.4-dev luajit
+          sudo apt-get install -y liblua5.1-0-dev luajit libluajit-5.1-dev libluajit-5.1-common
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
