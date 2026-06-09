@@ -3,4 +3,5 @@ examples
 target
 .gitattributes
 *.lock
-sphinx_doc/build
+docs/build
+local_build.sh
