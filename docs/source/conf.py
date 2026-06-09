@@ -22,7 +22,7 @@ copyright = '2026, Mathieu Roget'
 author = 'Mathieu Roget'
 
 # The full version, including alpha/beta/rc tags
-release = '1.8'
+release = '0.1.9'
 
 
 # -- General configuration ---------------------------------------------------

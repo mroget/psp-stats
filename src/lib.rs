@@ -107,12 +107,12 @@ fn stats(
 
 /// A Python module implemented in Rust!
 #[pymodule]
-mod qpsp_stats {
+mod psp_stats {
     use crate::minimize::minimize;
 use crate::minimize::Metric;
 use crate::Cost;
     use crate::Lat;
-    use crate::rmsd_multiple;
+    
     use crate::Method;
     use pyo3::prelude::*;
     use crate::RMSDMultiple;
