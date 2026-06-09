@@ -71,13 +71,12 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: 3.x
-      - name: Build wheels
-        uses: PyO3/maturin-action@v1
+      - uses: prefix-dev/setup-pixi@v0.9.6
         with:
-          target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
-          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
-          manylinux: musllinux_1_2
+          pixi-version: v0.59.0
+          environments: ${{ matrix.environment }}
+      - name: Build wheels
+        run: pixi run build
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
@@ -104,12 +103,12 @@ jobs:
         with:
           python-version: 3.13
           architecture: ${{ matrix.platform.python_arch }}
-      - name: Build wheels
-        uses: PyO3/maturin-action@v1
+      - uses: prefix-dev/setup-pixi@v0.9.6
         with:
-          target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
-          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+          pixi-version: v0.59.0
+          environments: ${{ matrix.environment }}
+      - name: Build wheels
+        run: pixi run build
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
@@ -130,12 +129,12 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: 3.x
-      - name: Build wheels
-        uses: PyO3/maturin-action@v1
+      - uses: prefix-dev/setup-pixi@v0.9.6
         with:
-          target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
-          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+          pixi-version: v0.59.0
+          environments: ${{ matrix.environment }}
+      - name: Build wheels
+        run: pixi run build
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
