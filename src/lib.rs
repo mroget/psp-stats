@@ -182,7 +182,7 @@ use crate::Cost;
         let m = match method.clone().unwrap_or("pivot".to_string()).as_str() {
             "pivot" => {Method::Pivot(thermalization_factor,autocorrelation_factor)},
             "dimerize" => {Method::Dimerize},
-            "iterate" => {Method::Iterate},
+            "enumerate" => {Method::Iterate},
             _ => {panic!("Method {:?} is not recognized !", method);}
         };
 

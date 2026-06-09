@@ -10,7 +10,6 @@ Welcome to qpsp-stats's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   intro
    usage
    references
    sampling
