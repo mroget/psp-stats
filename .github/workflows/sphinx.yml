@@ -13,7 +13,8 @@ jobs:
         persist-credentials: false
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
-      pre-build-command: "pip install myst_parser"
+      with:
+        pre-build-command: "pip install myst_parser"
 
 
     - name: Upload artifacts
