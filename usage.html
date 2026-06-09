@@ -1,0 +1,607 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="API Documentation" href="references.html"><link rel="prev" title="Welcome to qpsp-stats’s documentation!" href="index.html">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 -->
+        <title>Usage - qpsp-stats 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">qpsp-stats 1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">qpsp-stats 1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Usage</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="references.html">API Documentation</a><input aria-label="Toggle navigation of API Documentation" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/sample_solutions.html">qpsp_stats.sample_solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/correlation.html">qpsp_stats.correlation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/stats.html">qpsp_stats.stats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sampling.html">Sampling methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cost.html">Cost functions</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/usage.ipynb.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="Usage">
+<h1>Usage<a class="headerlink" href="#Usage" title="Link to this heading">¶</a></h1>
+<p>This notebook demonstrates how to use the <code class="docutils literal notranslate"><span class="pre">qpsp_stats</span></code> package.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">qpsp_stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qpsp</span> <span class="c1"># The package</span>
+</pre></div>
+</div>
+</div>
+<section id="1.-Sampling-SAW">
+<h2>1. Sampling SAW<a class="headerlink" href="#1.-Sampling-SAW" title="Link to this heading">¶</a></h2>
+<p>One can sample Self Avoiding Walk (SAW) either at random (via Pivot or dimerize algorithm) or by enumerating everything.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># At random using the Pivot</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">qpsp</span><span class="o">.</span><span class="n">sample_solutions</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;pivot&quot;</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="s2">&quot;tetrahedral&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of samples:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">))</span> <span class="c1"># print 10000</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One solution:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">5</span><span class="p">])</span> <span class="c1"># First five coordinates of the first random SAW</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of samples: 10000
+One solution:
+ [[0.0, 0.0, 0.0], [-2.193931022920578, 2.193931022920578, 2.193931022920578], [0.0, 4.387862045841156, 4.387862045841156], [-2.193931022920578, 6.581793068761733, 6.581793068761733], [-4.387862045841156, 8.775724091682312, 4.387862045841156]]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enumerating all SAW</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">qpsp</span><span class="o">.</span><span class="n">sample_solutions</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;enumerate&quot;</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="s2">&quot;tetrahedral&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of samples:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">))</span> <span class="c1"># print 149499. This number increases exponentially in len !</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One solution:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">5</span><span class="p">])</span> <span class="c1"># First five coordinates of the first random SAW</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of samples: 149499
+One solution:
+ [[0.0, 0.0, 0.0], [-2.193931022920578, 2.193931022920578, 2.193931022920578], [0.0, 4.387862045841156, 4.387862045841156], [2.193931022920578, 6.581793068761733, 2.193931022920578], [4.387862045841156, 8.775724091682312, 4.387862045841156]]
+</pre></div></div>
+</div>
+</section>
+<section id="2.-Calculating-statistics-for-a-cost-function-and-a-protein">
+<h2>2. Calculating statistics for a cost function and a protein<a class="headerlink" href="#2.-Calculating-statistics-for-a-cost-function-and-a-protein" title="Link to this heading">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">prody</span> <span class="c1"># Loading pdb files</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">protein</span> <span class="o">=</span> <span class="n">prody</span><span class="o">.</span><span class="n">parsePDB</span><span class="p">(</span><span class="s2">&quot;2k2r&quot;</span><span class="p">)[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="c1"># Loading PDB file</span>
+<span class="n">sequence</span> <span class="o">=</span> <span class="n">protein</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;name CA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getSequence</span><span class="p">()</span> <span class="c1"># Extracting the sequence</span>
+<span class="n">ground_truth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">protein</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;name CA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getCoordsets</span><span class="p">())</span>  <span class="c1"># Extracting the coordinates of the CA atoms</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Protein chain of length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span><span class="si">}</span><span class="s2"> loaded !&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Protein chain of length 129 loaded !
+</pre></div></div>
+</div>
+<p>Now we can calculate the correlation between the rmsd against ground truth and the cost function. A length 129 has too many possible SAW for enumerating them all, so we use random sampling instead.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr</span> <span class="o">=</span> <span class="n">qpsp</span><span class="o">.</span><span class="n">correlation</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">seq</span><span class="p">,</span><span class="n">coords</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;pivot&quot;</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="s2">&quot;tetrahedral&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Correlation:&quot;</span><span class="p">,</span> <span class="n">corr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Correlation: -0.04155475755475756
+</pre></div></div>
+</div>
+<p>Cell above returns a correlation coefficient close to 0. That is because the cost function we provided returns random numbers without reading the input. They are not correlated, hence a coefficient close to 0.</p>
+<p>Let us define a cost function that makes sense by summing up contact energies of amino-acids using the Miyazawa-Jernigan coefficients:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[cost(\text{seq}, \text{structure}, MJ) = \sum_{0 \leq i &lt; j &lt; \text{len}(\text{seq})} \epsilon_{i,j}(\text{seq},\text{structure},MJ),\]</div>
+</div>
+<p>where</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\epsilon_{i,j}(\text{seq},\text{structure},w) = \left\{
+    \begin{matrix}
+        w_{\text{seq}_i,\text{seq}_j} &amp; \text{if } \Vert \text{structure}_i - \text{structure}_j \Vert_2 \leq 7.8\\
+        0 &amp; \text{otherwise}\\
+    \end{matrix}
+        \right. .\end{split}\]</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Loading contact energy coefficients</span>
+<span class="n">MJ</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.44</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.99</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.8</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.5</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.83</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.96</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.95</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.16</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.57</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.16</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.11</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.86</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.59</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.85</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.41</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.27</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.6</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.57</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.95</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.07</span><span class="p">},</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.99</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.46</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.56</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.02</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.41</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.32</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.55</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.91</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.94</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.39</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.51</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.03</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.95</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.3</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.57</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.89</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.98</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.12</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.48</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.45</span><span class="p">},</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.8</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.56</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.26</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.84</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.28</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.29</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.16</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.66</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.81</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.13</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.28</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.02</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.75</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.1</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.48</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.56</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.77</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.98</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.36</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.25</span><span class="p">},</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.5</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.02</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.84</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.54</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.04</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.05</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.78</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.25</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.58</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.78</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.03</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.52</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.24</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.67</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.17</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.27</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.14</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.63</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.01</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.76</span><span class="p">},</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.83</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.41</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.28</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.04</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.37</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.48</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.14</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.67</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.91</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.16</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.34</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.92</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.74</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.04</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.4</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.59</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.54</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.03</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.37</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.2</span><span class="p">},</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.96</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.32</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.29</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.05</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.48</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.52</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.18</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.62</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.04</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.38</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.46</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.05</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.83</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.07</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.48</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.67</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.58</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.07</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.49</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.32</span><span class="p">},</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.95</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.55</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.16</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.78</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">6.14</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.18</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.06</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.66</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.82</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.42</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.22</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.99</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.07</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.11</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.84</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.99</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.98</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.41</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.69</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.73</span><span class="p">},</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.16</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.91</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.66</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.25</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">5.67</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.62</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.66</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.17</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.36</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.01</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.01</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.78</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.76</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.97</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.76</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.79</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.52</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.16</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.6</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.19</span><span class="p">},</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.57</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.94</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.81</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.58</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.91</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.04</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.82</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.36</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.72</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.31</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.32</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.01</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.84</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.89</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.51</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.41</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.83</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.31</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.03</span><span class="p">},</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.16</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.39</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.13</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.78</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.16</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.38</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.42</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.01</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.31</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.24</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.08</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.82</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.74</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.66</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.59</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.22</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.15</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.72</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.15</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.87</span><span class="p">},</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.11</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.51</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.28</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.03</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.34</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.46</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.22</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.01</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.32</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.08</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.12</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.96</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.88</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.74</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.42</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.31</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">},</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.86</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.03</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.02</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.52</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.92</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.05</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.99</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.78</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.01</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.82</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.96</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.67</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.58</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.49</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.63</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.48</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.11</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.62</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.05</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.57</span><span class="p">},</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.59</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.95</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.75</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.24</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.74</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.83</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.07</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.76</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.84</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.74</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.88</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.58</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.68</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.71</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.68</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.51</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.08</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.64</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.21</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.53</span><span class="p">},</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.85</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.3</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.1</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.67</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.04</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.07</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.11</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.97</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.89</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.66</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.49</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.71</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.54</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.46</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.42</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.98</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.29</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.73</span><span class="p">},</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.41</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.57</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.48</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.17</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.4</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.48</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.84</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.76</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.59</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.63</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.68</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.46</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.21</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.02</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.32</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.29</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.68</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.33</span><span class="p">},</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.27</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.89</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.56</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.27</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.59</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.67</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.99</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.79</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.51</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.22</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.74</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.48</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.51</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.42</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.02</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.91</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.15</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.27</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.26</span><span class="p">},</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.6</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.98</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.77</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.14</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.54</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.58</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.98</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.52</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.41</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.15</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.42</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.11</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.08</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.98</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.32</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.15</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.05</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.16</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.35</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.25</span><span class="p">},</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.57</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.12</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.98</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.63</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.03</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.07</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.41</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.16</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.83</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.72</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.62</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.64</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.29</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.27</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.16</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.55</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.59</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">},</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.95</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.48</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.36</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.01</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.37</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.49</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.69</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.6</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.31</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.15</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.31</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.05</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.21</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.29</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.68</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.35</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.59</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.12</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.97</span><span class="p">},</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.07</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.45</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.25</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.76</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.2</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.32</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.73</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.19</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.03</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.87</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.9</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.57</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.53</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.73</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.33</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.26</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.25</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.7</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.97</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.75</span><span class="p">}}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">energy</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">structure</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+    <span class="n">structure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">structure</span><span class="p">)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">structure</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">structure</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mf">7.8</span><span class="p">:</span> <span class="c1"># If CA atoms are at distance below 7.8 ...</span>
+                <span class="n">e</span> <span class="o">+=</span> <span class="n">MJ</span><span class="p">[</span><span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="n">seq</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="c1"># ... add the contact energy to the total energy.</span>
+
+    <span class="k">return</span> <span class="n">e</span>
+<br/><br/></pre></div>
+</div>
+</div>
+<p>We can now calculate the correlation between this cost function and the the rmsd against ground truth:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr</span> <span class="o">=</span> <span class="n">qpsp</span><span class="o">.</span><span class="n">correlation</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;pivot&quot;</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="s2">&quot;tetrahedral&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Correlation:&quot;</span><span class="p">,</span> <span class="n">corr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Correlation: 0.42508463563514337
+</pre></div></div>
+</div>
+<p>It is also possible to obtain other statistics swapping <code class="docutils literal notranslate"><span class="pre">correlation</span></code> with <code class="docutils literal notranslate"><span class="pre">stats</span></code></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">stat_c</span><span class="p">,</span> <span class="n">stat_r</span><span class="p">)</span> <span class="o">=</span> <span class="n">qpsp</span><span class="o">.</span><span class="n">stats</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;pivot&quot;</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="s2">&quot;tetrahedral&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Correlation:&quot;</span><span class="p">,</span> <span class="n">corr</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Minimum cost across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average cost across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum cost across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_c</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Minimum rmsd across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average rmsd across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_r</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum rmsd across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_r</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Correlation: 0.4564767932156539
+Minimum cost across all solutions: -1997.1399999999974
+Average cost across all solutions: -1515.071359999999
+Maximum cost across all solutions: -1200.9099999999985
+Minimum rmsd across all solutions: 16.333999006856978
+Average rmsd across all solutions: 28.02836690224296
+Maximum rmsd across all solutions: 53.587748625448945
+</pre></div></div>
+</div>
+</section>
+<section id="3.-Fast-statistic-estimation">
+<h2>3. Fast statistic estimation<a class="headerlink" href="#3.-Fast-statistic-estimation" title="Link to this heading">¶</a></h2>
+<p>It is possible to pass some lua code instead of a python function. This lua code is then run via luajit which is much faster.</p>
+<p>Let us calculate the same correlation than Section 2, but with a lua code instead.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lua_code</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">MJ = {[&#39;C&#39;]={[&#39;C&#39;]=-5.44, [&#39;M&#39;]=-4.99, [&#39;F&#39;]=-5.8, [&#39;I&#39;]=-5.5, [&#39;L&#39;]=-5.83, [&#39;V&#39;]=-4.96, [&#39;W&#39;]=-4.95, [&#39;Y&#39;]=-4.16, [&#39;A&#39;]=-3.57, [&#39;G&#39;]=-3.16, [&#39;T&#39;]=-3.11, [&#39;S&#39;]=-2.86, [&#39;N&#39;]=-2.59, [&#39;Q&#39;]=-2.85, [&#39;D&#39;]=-2.41, [&#39;E&#39;]=-2.27, [&#39;H&#39;]=-3.6, [&#39;R&#39;]=-2.57, [&#39;K&#39;]=-1.95, [&#39;P&#39;]=-3.07}, [&#39;M&#39;]={[&#39;C&#39;]=-4.99, [&#39;M&#39;]=-5.46, [&#39;F&#39;]=-6.56, [&#39;I&#39;]=-6.02, [&#39;L&#39;]=-6.41, [&#39;V&#39;]=-5.32, [&#39;W&#39;]=-5.55, [&#39;Y&#39;]=-4.91, [&#39;A&#39;]=-3.94, [&#39;G&#39;]=-3.39, [&#39;T&#39;]=-3.51, [&#39;S&#39;]=-3.03, [&#39;N&#39;]=-2.95, [&#39;Q&#39;]=-3.3, [&#39;D&#39;]=-2.57, [&#39;E&#39;]=-2.89, [&#39;H&#39;]=-3.98, [&#39;R&#39;]=-3.12, [&#39;K&#39;]=-2.48, [&#39;P&#39;]=-3.45}, [&#39;F&#39;]={[&#39;C&#39;]=-5.8, [&#39;M&#39;]=-6.56, [&#39;F&#39;]=-7.26, [&#39;I&#39;]=-6.84, [&#39;L&#39;]=-7.28, [&#39;V&#39;]=-6.29, [&#39;W&#39;]=-6.16, [&#39;Y&#39;]=-5.66, [&#39;A&#39;]=-4.81, [&#39;G&#39;]=-4.13, [&#39;T&#39;]=-4.28, [&#39;S&#39;]=-4.02, [&#39;N&#39;]=-3.75, [&#39;Q&#39;]=-4.1, [&#39;D&#39;]=-3.48, [&#39;E&#39;]=-3.56, [&#39;H&#39;]=-4.77, [&#39;R&#39;]=-3.98, [&#39;K&#39;]=-3.36, [&#39;P&#39;]=-4.25}, [&#39;I&#39;]={[&#39;C&#39;]=-5.5, [&#39;M&#39;]=-6.02, [&#39;F&#39;]=-6.84, [&#39;I&#39;]=-6.54, [&#39;L&#39;]=-7.04, [&#39;V&#39;]=-6.05, [&#39;W&#39;]=-5.78, [&#39;Y&#39;]=-5.25, [&#39;A&#39;]=-4.58, [&#39;G&#39;]=-3.78, [&#39;T&#39;]=-4.03, [&#39;S&#39;]=-3.52, [&#39;N&#39;]=-3.24, [&#39;Q&#39;]=-3.67, [&#39;D&#39;]=-3.17, [&#39;E&#39;]=-3.27, [&#39;H&#39;]=-4.14, [&#39;R&#39;]=-3.63, [&#39;K&#39;]=-3.01, [&#39;P&#39;]=-3.76}, [&#39;L&#39;]={[&#39;C&#39;]=-5.83, [&#39;M&#39;]=-6.41, [&#39;F&#39;]=-7.28, [&#39;I&#39;]=-7.04, [&#39;L&#39;]=-7.37, [&#39;V&#39;]=-6.48, [&#39;W&#39;]=-6.14, [&#39;Y&#39;]=-5.67, [&#39;A&#39;]=-4.91, [&#39;G&#39;]=-4.16, [&#39;T&#39;]=-4.34, [&#39;S&#39;]=-3.92, [&#39;N&#39;]=-3.74, [&#39;Q&#39;]=-4.04, [&#39;D&#39;]=-3.4, [&#39;E&#39;]=-3.59, [&#39;H&#39;]=-4.54, [&#39;R&#39;]=-4.03, [&#39;K&#39;]=-3.37, [&#39;P&#39;]=-4.2}, [&#39;V&#39;]={[&#39;C&#39;]=-4.96, [&#39;M&#39;]=-5.32, [&#39;F&#39;]=-6.29, [&#39;I&#39;]=-6.05, [&#39;L&#39;]=-6.48, [&#39;V&#39;]=-5.52, [&#39;W&#39;]=-5.18, [&#39;Y&#39;]=-4.62, [&#39;A&#39;]=-4.04, [&#39;G&#39;]=-3.38, [&#39;T&#39;]=-3.46, [&#39;S&#39;]=-3.05, [&#39;N&#39;]=-2.83, [&#39;Q&#39;]=-3.07, [&#39;D&#39;]=-2.48, [&#39;E&#39;]=-2.67, [&#39;H&#39;]=-3.58, [&#39;R&#39;]=-3.07, [&#39;K&#39;]=-2.49, [&#39;P&#39;]=-3.32}, [&#39;W&#39;]={[&#39;C&#39;]=-4.95, [&#39;M&#39;]=-5.55, [&#39;F&#39;]=-6.16, [&#39;I&#39;]=-5.78, [&#39;L&#39;]=-6.14, [&#39;V&#39;]=-5.18, [&#39;W&#39;]=-5.06, [&#39;Y&#39;]=-4.66, [&#39;A&#39;]=-3.82, [&#39;G&#39;]=-3.42, [&#39;T&#39;]=-3.22, [&#39;S&#39;]=-2.99, [&#39;N&#39;]=-3.07, [&#39;Q&#39;]=-3.11, [&#39;D&#39;]=-2.84, [&#39;E&#39;]=-2.99, [&#39;H&#39;]=-3.98, [&#39;R&#39;]=-3.41, [&#39;K&#39;]=-2.69, [&#39;P&#39;]=-3.73}, [&#39;Y&#39;]={[&#39;C&#39;]=-4.16, [&#39;M&#39;]=-4.91, [&#39;F&#39;]=-5.66, [&#39;I&#39;]=-5.25, [&#39;L&#39;]=-5.67, [&#39;V&#39;]=-4.62, [&#39;W&#39;]=-4.66, [&#39;Y&#39;]=-4.17, [&#39;A&#39;]=-3.36, [&#39;G&#39;]=-3.01, [&#39;T&#39;]=-3.01, [&#39;S&#39;]=-2.78, [&#39;N&#39;]=-2.76, [&#39;Q&#39;]=-2.97, [&#39;D&#39;]=-2.76, [&#39;E&#39;]=-2.79, [&#39;H&#39;]=-3.52, [&#39;R&#39;]=-3.16, [&#39;K&#39;]=-2.6, [&#39;P&#39;]=-3.19}, [&#39;A&#39;]={[&#39;C&#39;]=-3.57, [&#39;M&#39;]=-3.94, [&#39;F&#39;]=-4.81, [&#39;I&#39;]=-4.58, [&#39;L&#39;]=-4.91, [&#39;V&#39;]=-4.04, [&#39;W&#39;]=-3.82, [&#39;Y&#39;]=-3.36, [&#39;A&#39;]=-2.72, [&#39;G&#39;]=-2.31, [&#39;T&#39;]=-2.32, [&#39;S&#39;]=-2.01, [&#39;N&#39;]=-1.84, [&#39;Q&#39;]=-1.89, [&#39;D&#39;]=-1.7, [&#39;E&#39;]=-1.51, [&#39;H&#39;]=-2.41, [&#39;R&#39;]=-1.83, [&#39;K&#39;]=-1.31, [&#39;P&#39;]=-2.03}, [&#39;G&#39;]={[&#39;C&#39;]=-3.16, [&#39;M&#39;]=-3.39, [&#39;F&#39;]=-4.13, [&#39;I&#39;]=-3.78, [&#39;L&#39;]=-4.16, [&#39;V&#39;]=-3.38, [&#39;W&#39;]=-3.42, [&#39;Y&#39;]=-3.01, [&#39;A&#39;]=-2.31, [&#39;G&#39;]=-2.24, [&#39;T&#39;]=-2.08, [&#39;S&#39;]=-1.82, [&#39;N&#39;]=-1.74, [&#39;Q&#39;]=-1.66, [&#39;D&#39;]=-1.59, [&#39;E&#39;]=-1.22, [&#39;H&#39;]=-2.15, [&#39;R&#39;]=-1.72, [&#39;K&#39;]=-1.15, [&#39;P&#39;]=-1.87}, [&#39;T&#39;]={[&#39;C&#39;]=-3.11, [&#39;M&#39;]=-3.51, [&#39;F&#39;]=-4.28, [&#39;I&#39;]=-4.03, [&#39;L&#39;]=-4.34, [&#39;V&#39;]=-3.46, [&#39;W&#39;]=-3.22, [&#39;Y&#39;]=-3.01, [&#39;A&#39;]=-2.32, [&#39;G&#39;]=-2.08, [&#39;T&#39;]=-2.12, [&#39;S&#39;]=-1.96, [&#39;N&#39;]=-1.88, [&#39;Q&#39;]=-1.9, [&#39;D&#39;]=-1.8, [&#39;E&#39;]=-1.74, [&#39;H&#39;]=-2.42, [&#39;R&#39;]=-1.9, [&#39;K&#39;]=-1.31, [&#39;P&#39;]=-1.9}, [&#39;S&#39;]={[&#39;C&#39;]=-2.86, [&#39;M&#39;]=-3.03, [&#39;F&#39;]=-4.02, [&#39;I&#39;]=-3.52, [&#39;L&#39;]=-3.92, [&#39;V&#39;]=-3.05, [&#39;W&#39;]=-2.99, [&#39;Y&#39;]=-2.78, [&#39;A&#39;]=-2.01, [&#39;G&#39;]=-1.82, [&#39;T&#39;]=-1.96, [&#39;S&#39;]=-1.67, [&#39;N&#39;]=-1.58, [&#39;Q&#39;]=-1.49, [&#39;D&#39;]=-1.63, [&#39;E&#39;]=-1.48, [&#39;H&#39;]=-2.11, [&#39;R&#39;]=-1.62, [&#39;K&#39;]=-1.05, [&#39;P&#39;]=-1.57}, [&#39;N&#39;]={[&#39;C&#39;]=-2.59, [&#39;M&#39;]=-2.95, [&#39;F&#39;]=-3.75, [&#39;I&#39;]=-3.24, [&#39;L&#39;]=-3.74, [&#39;V&#39;]=-2.83, [&#39;W&#39;]=-3.07, [&#39;Y&#39;]=-2.76, [&#39;A&#39;]=-1.84, [&#39;G&#39;]=-1.74, [&#39;T&#39;]=-1.88, [&#39;S&#39;]=-1.58, [&#39;N&#39;]=-1.68, [&#39;Q&#39;]=-1.71, [&#39;D&#39;]=-1.68, [&#39;E&#39;]=-1.51, [&#39;H&#39;]=-2.08, [&#39;R&#39;]=-1.64, [&#39;K&#39;]=-1.21, [&#39;P&#39;]=-1.53}, [&#39;Q&#39;]={[&#39;C&#39;]=-2.85, [&#39;M&#39;]=-3.3, [&#39;F&#39;]=-4.1, [&#39;I&#39;]=-3.67, [&#39;L&#39;]=-4.04, [&#39;V&#39;]=-3.07, [&#39;W&#39;]=-3.11, [&#39;Y&#39;]=-2.97, [&#39;A&#39;]=-1.89, [&#39;G&#39;]=-1.66, [&#39;T&#39;]=-1.9, [&#39;S&#39;]=-1.49, [&#39;N&#39;]=-1.71, [&#39;Q&#39;]=-1.54, [&#39;D&#39;]=-1.46, [&#39;E&#39;]=-1.42, [&#39;H&#39;]=-1.98, [&#39;R&#39;]=-1.8, [&#39;K&#39;]=-1.29, [&#39;P&#39;]=-1.73}, [&#39;D&#39;]={[&#39;C&#39;]=-2.41, [&#39;M&#39;]=-2.57, [&#39;F&#39;]=-3.48, [&#39;I&#39;]=-3.17, [&#39;L&#39;]=-3.4, [&#39;V&#39;]=-2.48, [&#39;W&#39;]=-2.84, [&#39;Y&#39;]=-2.76, [&#39;A&#39;]=-1.7, [&#39;G&#39;]=-1.59, [&#39;T&#39;]=-1.8, [&#39;S&#39;]=-1.63, [&#39;N&#39;]=-1.68, [&#39;Q&#39;]=-1.46, [&#39;D&#39;]=-1.21, [&#39;E&#39;]=-1.02, [&#39;H&#39;]=-2.32, [&#39;R&#39;]=-2.29, [&#39;K&#39;]=-1.68, [&#39;P&#39;]=-1.33}, [&#39;E&#39;]={[&#39;C&#39;]=-2.27, [&#39;M&#39;]=-2.89, [&#39;F&#39;]=-3.56, [&#39;I&#39;]=-3.27, [&#39;L&#39;]=-3.59, [&#39;V&#39;]=-2.67, [&#39;W&#39;]=-2.99, [&#39;Y&#39;]=-2.79, [&#39;A&#39;]=-1.51, [&#39;G&#39;]=-1.22, [&#39;T&#39;]=-1.74, [&#39;S&#39;]=-1.48, [&#39;N&#39;]=-1.51, [&#39;Q&#39;]=-1.42, [&#39;D&#39;]=-1.02, [&#39;E&#39;]=-0.91, [&#39;H&#39;]=-2.15, [&#39;R&#39;]=-2.27, [&#39;K&#39;]=-1.8, [&#39;P&#39;]=-1.26}, [&#39;H&#39;]={[&#39;C&#39;]=-3.6, [&#39;M&#39;]=-3.98, [&#39;F&#39;]=-4.77, [&#39;I&#39;]=-4.14, [&#39;L&#39;]=-4.54, [&#39;V&#39;]=-3.58, [&#39;W&#39;]=-3.98, [&#39;Y&#39;]=-3.52, [&#39;A&#39;]=-2.41, [&#39;G&#39;]=-2.15, [&#39;T&#39;]=-2.42, [&#39;S&#39;]=-2.11, [&#39;N&#39;]=-2.08, [&#39;Q&#39;]=-1.98, [&#39;D&#39;]=-2.32, [&#39;E&#39;]=-2.15, [&#39;H&#39;]=-3.05, [&#39;R&#39;]=-2.16, [&#39;K&#39;]=-1.35, [&#39;P&#39;]=-2.25}, [&#39;R&#39;]={[&#39;C&#39;]=-2.57, [&#39;M&#39;]=-3.12, [&#39;F&#39;]=-3.98, [&#39;I&#39;]=-3.63, [&#39;L&#39;]=-4.03, [&#39;V&#39;]=-3.07, [&#39;W&#39;]=-3.41, [&#39;Y&#39;]=-3.16, [&#39;A&#39;]=-1.83, [&#39;G&#39;]=-1.72, [&#39;T&#39;]=-1.9, [&#39;S&#39;]=-1.62, [&#39;N&#39;]=-1.64, [&#39;Q&#39;]=-1.8, [&#39;D&#39;]=-2.29, [&#39;E&#39;]=-2.27, [&#39;H&#39;]=-2.16, [&#39;R&#39;]=-1.55, [&#39;K&#39;]=-0.59, [&#39;P&#39;]=-1.7}, [&#39;K&#39;]={[&#39;C&#39;]=-1.95, [&#39;M&#39;]=-2.48, [&#39;F&#39;]=-3.36, [&#39;I&#39;]=-3.01, [&#39;L&#39;]=-3.37, [&#39;V&#39;]=-2.49, [&#39;W&#39;]=-2.69, [&#39;Y&#39;]=-2.6, [&#39;A&#39;]=-1.31, [&#39;G&#39;]=-1.15, [&#39;T&#39;]=-1.31, [&#39;S&#39;]=-1.05, [&#39;N&#39;]=-1.21, [&#39;Q&#39;]=-1.29, [&#39;D&#39;]=-1.68, [&#39;E&#39;]=-1.8, [&#39;H&#39;]=-1.35, [&#39;R&#39;]=-0.59, [&#39;K&#39;]=-0.12, [&#39;P&#39;]=-0.97}, [&#39;P&#39;]={[&#39;C&#39;]=-3.07, [&#39;M&#39;]=-3.45, [&#39;F&#39;]=-4.25, [&#39;I&#39;]=-3.76, [&#39;L&#39;]=-4.2, [&#39;V&#39;]=-3.32, [&#39;W&#39;]=-3.73, [&#39;Y&#39;]=-3.19, [&#39;A&#39;]=-2.03, [&#39;G&#39;]=-1.87, [&#39;T&#39;]=-1.9, [&#39;S&#39;]=-1.57, [&#39;N&#39;]=-1.53, [&#39;Q&#39;]=-1.73, [&#39;D&#39;]=-1.33, [&#39;E&#39;]=-1.26, [&#39;H&#39;]=-2.25, [&#39;R&#39;]=-1.7, [&#39;K&#39;]=-0.97, [&#39;P&#39;]=-1.75}}</span>
+
+<span class="s2">function dist(a, b)</span>
+<span class="s2">    local d = 0.;</span>
+<span class="s2">    local n = #(a);</span>
+<span class="s2">    for i = 1,n do</span>
+<span class="s2">            d = d + (a[i]-b[i])^2;</span>
+<span class="s2">    end</span>
+<span class="s2">    return d^0.5;</span>
+<span class="s2">end</span>
+
+<span class="s2">function energy(seq, xyz)</span>
+<span class="s2">    local n = string.len(seq);</span>
+<span class="s2">    local e = 0.;</span>
+<span class="s2">    for i = 1,n do</span>
+<span class="s2">            for j = i+1,n do</span>
+<span class="s2">                    if (dist(xyz[i],xyz[j]) &lt; 7.8) then</span>
+<span class="s2">                            e = e + MJ[seq:sub(i,i)][seq:sub(j,j)];</span>
+<span class="s2">                    end</span>
+<span class="s2">            end</span>
+<span class="s2">    end</span>
+<span class="s2">    return e;</span>
+<span class="s2">end</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr</span> <span class="o">=</span> <span class="n">qpsp</span><span class="o">.</span><span class="n">correlation</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;energy&quot;</span><span class="p">,</span> <span class="n">lua_code</span><span class="p">),</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;pivot&quot;</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="s2">&quot;tetrahedral&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Correlation:&quot;</span><span class="p">,</span> <span class="n">corr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Correlation: 0.42615466307521466
+</pre></div></div>
+</div>
+<p>The cell has a running time similar to Section 2, even though 100 times more SAW are used for the estimation. This shows a speedup in the order of <span class="math notranslate nohighlight">\(\times 100\)</span>. In the tuple, the first string is the name of the lua function to call (in my lua code it is named “energy”). The second string is the lua code.</p>
+<p>It can also be used to gather the other stats:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">stat_c</span><span class="p">,</span> <span class="n">stat_r</span><span class="p">)</span> <span class="o">=</span> <span class="n">qpsp</span><span class="o">.</span><span class="n">stats</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;energy&quot;</span><span class="p">,</span> <span class="n">lua_code</span><span class="p">),</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;pivot&quot;</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="s2">&quot;tetrahedral&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Correlation:&quot;</span><span class="p">,</span> <span class="n">corr</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Minimum cost across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average cost across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum cost across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_c</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Minimum rmsd across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average rmsd across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_r</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum rmsd across all solutions:&quot;</span><span class="p">,</span> <span class="n">stat_r</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Correlation: 0.43981482134789823
+Minimum cost across all solutions: -2230.460000000001
+Average cost across all solutions: -1507.7230219999985
+Maximum cost across all solutions: -1128.4899999999989
+Minimum rmsd across all solutions: 14.579248863086889
+Average rmsd across all solutions: 28.243252156297544
+Maximum rmsd across all solutions: 55.73636126440954
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="references.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">API Documentation</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Mathieu Roget
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Usage</a><ul>
+<li><a class="reference internal" href="#1.-Sampling-SAW">1. Sampling SAW</a></li>
+<li><a class="reference internal" href="#2.-Calculating-statistics-for-a-cost-function-and-a-protein">2. Calculating statistics for a cost function and a protein</a></li>
+<li><a class="reference internal" href="#3.-Fast-statistic-estimation">3. Fast statistic estimation</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
