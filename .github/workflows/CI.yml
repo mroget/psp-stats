@@ -46,7 +46,7 @@ jobs:
           pixi-version: v0.59.0
           environments: ${{ matrix.environment }}
       - name: Build wheels
-        run: pixi run maturin build --release --out dist --find-interpreter -o ${{ matrix.platform.target }} --compatibility "manylinux"
+        run: pixi run build
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
